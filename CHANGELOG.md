@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.2]
+- Rename the method withOpacity to withValues
+
 ## [0.0.1] - Initial Release
 - Added real-time location suggestions using Google Places API
 - Implemented customizable search input and results display

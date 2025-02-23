@@ -1,6 +1,6 @@
 name: google_places_suggestions
 description: GooglePlacesSuggestions is a Flutter package that delivers real-time location suggestions using the Google Places API.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/rangholiyaprince/google_places_suggestions.git
 
 environment:
