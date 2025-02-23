@@ -1,3 +1,13 @@
-## 0.0.1
+# CHANGELOG
 
-* TODO: Describe initial release.
+All notable changes to this project will be documented in this file.
+
+## [0.0.1] - Initial Release
+- Added real-time location suggestions using Google Places API
+- Implemented customizable search input and results display
+- Added recent searches functionality with a configurable limit
+- Enabled voice input support for search queries
+- Enhanced error handling with customizable error messages
+- Included a widget for displaying no-results feedback
+
+Future updates will include more customization options and performance enhancements.
