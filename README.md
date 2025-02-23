@@ -7,7 +7,6 @@
 - Easy integration with Flutter
 - Customizable search input and results display
 - Recent searches and voice input support
-- Location button for quick access to the user's location
 
 ## Installation
 
@@ -56,13 +55,13 @@ placeSuggestionTextStyle: const TextStyle(
 
 // Customize decorations
 placeSuggestionIconDecoration: BoxDecoration(
-  color: Theme.of(context).primaryColor.withOpacity(0.1),
+  color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
   borderRadius: BorderRadius.circular(8),
 ),
 underlineDecoration: BoxDecoration(
   border: Border(
     bottom: BorderSide(
-      color: Colors.grey.withOpacity(0.2),
+      color: Colors.grey.withValues(alpha: 0.2),
       width: 1,
     ),
   ),

@@ -168,7 +168,7 @@ class RecentSearchesList extends StatelessWidget {
                 padding: const EdgeInsets.all(8), // Padding around the icon
                 decoration: BoxDecoration(
                   color:
-                      color.withOpacity(0.1), // Background with slight opacity
+                      color.withValues(alpha: 0.1), // Background with slight opacity
                   borderRadius: BorderRadius.circular(8), // Rounded corners
                 ),
                 child: Icon(
@@ -204,7 +204,7 @@ class RecentSearchesList extends StatelessWidget {
                       width: 40, // Width of underline
                       decoration: BoxDecoration(
                         color: color
-                            .withOpacity(0.2), // Underline color with opacity
+                            .withValues(alpha: 0.2), // Underline color with opacity
                         borderRadius:
                             BorderRadius.circular(1), // Rounded underline
                       ),

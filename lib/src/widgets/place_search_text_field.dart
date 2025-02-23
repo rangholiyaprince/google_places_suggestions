@@ -44,7 +44,7 @@ class PlaceSearchField extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black
-                .withOpacity(0.05), // Shadow color with transparency
+                .withValues(alpha: 0.05), // Shadow color with transparency
             blurRadius: 10, // Shadow blur radius
             spreadRadius: 0, // No spread
           ),

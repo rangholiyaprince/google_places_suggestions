@@ -113,7 +113,7 @@ class GooglePlacesSuggestions extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 10,
                     spreadRadius: 1,
                   ),
@@ -132,14 +132,14 @@ class GooglePlacesSuggestions extends StatelessWidget {
                       placeSuggestionIconDecoration:
                           placeSuggestionIconDecoration ??
                               BoxDecoration(
-                                color: color.withOpacity(0.1),
+                                color: color.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                       placeSuggestionTextStyle: placeSuggestionTextStyle ??
                           TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                       underlineDecoration: underlineDecoration ??
                           BoxDecoration(
-                            color: color.withOpacity(0.2),
+                            color: color.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(1),
                           ),
                     )

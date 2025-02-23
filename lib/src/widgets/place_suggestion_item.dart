@@ -42,7 +42,7 @@ class PlaceSuggestionItem extends StatelessWidget {
                     const EdgeInsets.all(8), // Padding inside icon container
                 decoration:
                     placeSuggestionIconDecoration, // Icon container decoration with default fallback
-                
+
                 child: Icon(
                   Icons.location_on_outlined, // Location icon
                   color: color, // Icon color

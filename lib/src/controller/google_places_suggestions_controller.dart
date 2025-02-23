@@ -8,13 +8,31 @@ import 'package:uuid/uuid.dart';
 
 import '../../google_places_suggestions.dart';
 
+/// A controller class that manages Google Places autocomplete functionality with recent searches
+/// and voice input capabilities.
+///
+/// This controller handles:
+/// * Google Places API integration for location suggestions
+/// * Recent searches management with local storage
+/// * Voice input for location search
+/// * UI state management for the search experience
 class GooglePlacesController extends GetxController
     with GetSingleTickerProviderStateMixin {
+  /// API key for Google Maps Services
   final String googleMapKey;
+
+  /// Callback function triggered when a place is selected
   final Function(String) onPlaceSelect;
+
+  /// Flag to enable/disable recent searches functionality
   final bool enableRecentSearches;
+
+  /// Maximum number of recent searches to store
   final int maxRecentSearches;
-  final Function(String)? onError;  
+
+  /// Optional callback for error handling
+  final Function(String)? onError;
+
   late final RecentSearchesService _recentSearchesService;
 
   GooglePlacesController({
@@ -26,13 +44,28 @@ class GooglePlacesController extends GetxController
   });
 
   // Observable variables
+  /// List of current place suggestions from Google Places API
   final _suggestions = <String>[].obs;
+
+  /// List of recent searches stored locally
   final _recentSearches = <String>[].obs;
+
+  /// Loading state indicator
   final _isLoading = false.obs;
+
+  /// Expanded state of the suggestions list
   final _isExpanded = false.obs;
+
+  /// Error state indicator
   final _showError = false.obs;
+
+  /// Current error message
   final _errorMessage = ''.obs;
+
+  /// Voice input listening state
   final _isListening = false.obs;
+
+  /// Clear icon visibility state
   final _isClearIconShow = false.obs;
 
   // Non-reactive variables
@@ -45,20 +78,38 @@ class GooglePlacesController extends GetxController
   late Animation<double> fadeAnimation;
   final stt.SpeechToText _speech = stt.SpeechToText();
 
-  // Getters
+  /// Returns the text editing controller for the search input
   TextEditingController get controller => _controller;
+
+  /// Returns the focus node for the search input
   FocusNode get focusNode => _focusNode;
+
+  /// Returns the current list of place suggestions
   List<String> get suggestions => _suggestions;
+
+  /// Returns the list of recent searches
   List<String> get recentSearches => _recentSearches;
+
+  /// Returns true if the controller is in a loading state
   bool get isLoading => _isLoading.value;
+
+  /// Returns true if the suggestions list is expanded
   bool get isExpanded => _isExpanded.value;
+
+  /// Returns true if an error state is active
   bool get showError => _showError.value;
+
+  /// Returns the current error message
   String get errorMessage => _errorMessage.value;
+
+  /// Returns true if voice input is currently listening
   bool get isListening => _isListening.value;
+
+  /// Returns true if the clear icon should be shown
   bool get isClearIconShow => _isClearIconShow.value;
 
   @override
-  void onInit()async {
+  void onInit() async {
     super.onInit();
     _sessionToken = _uuid.v4();
     _controller.addListener(_onSearchChanged);
@@ -81,6 +132,7 @@ class GooglePlacesController extends GetxController
     ));
   }
 
+  /// Initializes required services including SharedPreferences
   Future<void> _initializeServices() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -91,6 +143,7 @@ class GooglePlacesController extends GetxController
     }
   }
 
+  /// Loads previously saved recent searches from local storage
   Future<void> _loadRecentSearches() async {
     if (!enableRecentSearches) return;
 
@@ -102,6 +155,7 @@ class GooglePlacesController extends GetxController
     }
   }
 
+  /// Saves a new place to recent searches
   Future<void> _saveRecentSearch(String place) async {
     if (!enableRecentSearches || _recentSearches.contains(place)) return;
 
@@ -116,13 +170,14 @@ class GooglePlacesController extends GetxController
     }
   }
 
+  /// Removes a specific search from recent searches
+  ///
+  /// [search] The search term to remove
   Future<void> removeRecentSearch(String search) async {
     try {
       await _recentSearchesService.removeRecentSearch(search);
       _recentSearches.remove(search);
 
-      // If this was the last item and we're showing recent searches,
-      // we need to update the expanded state
       if (_recentSearches.isEmpty && _controller.text.isEmpty) {
         _isExpanded.value = false;
         animationController.reverse();
@@ -132,6 +187,7 @@ class GooglePlacesController extends GetxController
     }
   }
 
+  /// Clears all recent searches from storage
   Future<void> clearRecentSearches() async {
     try {
       await _recentSearchesService.clearRecentSearches();
@@ -141,6 +197,7 @@ class GooglePlacesController extends GetxController
     }
   }
 
+  /// Handles focus changes for the search input
   void _onFocusChanged() {
     if (_focusNode.hasFocus && _controller.text.isEmpty) {
       _isExpanded.value = enableRecentSearches && _recentSearches.isNotEmpty;
@@ -155,6 +212,7 @@ class GooglePlacesController extends GetxController
     }
   }
 
+  /// Handles changes in the search input text
   void _onSearchChanged() {
     if (_controller.text.isEmpty) {
       _suggestions.clear();
@@ -172,7 +230,6 @@ class GooglePlacesController extends GetxController
 
     _isExpanded.value = true;
     _isClearIconShow.value = true;
-
     _showError.value = false;
     animationController.forward();
 
@@ -183,6 +240,9 @@ class GooglePlacesController extends GetxController
     );
   }
 
+  /// Handles the selection of a place from suggestions or recent searches
+  ///
+  /// [place] The selected place string
   void onPlaceSelected(String place) {
     _controller.text = place;
     _focusNode.unfocus();
@@ -195,12 +255,14 @@ class GooglePlacesController extends GetxController
     _refreshSessionToken();
   }
 
-    bool get shouldShowNoResults =>
+  /// Returns true if no results should be shown
+  bool get shouldShowNoResults =>
       !isLoading &&
       controller.text.isNotEmpty &&
       suggestions.isEmpty &&
       !showError;
 
+  /// Fetches place suggestions from Google Places API
   Future<void> _getSuggestions(String input) async {
     if (input.isEmpty) {
       _suggestions.clear();
@@ -221,15 +283,15 @@ class GooglePlacesController extends GetxController
       _isLoading.value = false;
       _showError.value = false;
 
-      // Make sure the expanded state is correct
       _isExpanded.value = suggestions.isNotEmpty ||
           (enableRecentSearches && _recentSearches.isNotEmpty) ||
-          controller.text.isNotEmpty; // Keep expanded even with no results
+          controller.text.isNotEmpty;
     } catch (e) {
       handleError('Network error occurred');
     }
   }
 
+  /// Clears the current search input and resets related states
   void clearSearch() {
     _controller.clear();
     _suggestions.clear();
@@ -243,6 +305,9 @@ class GooglePlacesController extends GetxController
     }
   }
 
+  /// Handles errors and triggers error callback if provided
+  ///
+  /// [message] The error message to display
   void handleError(String message) {
     _suggestions.clear();
     _isLoading.value = false;
@@ -254,10 +319,12 @@ class GooglePlacesController extends GetxController
     }
   }
 
+  /// Refreshes the session token for Google Places API
   void _refreshSessionToken() {
     _sessionToken = _uuid.v4();
   }
 
+  /// Initializes the speech recognition service
   Future<void> _initSpeech() async {
     try {
       bool available = await _speech.initialize(
@@ -276,12 +343,14 @@ class GooglePlacesController extends GetxController
     }
   }
 
+  /// Handles speech recognition status changes
   void _onSpeechStatus(String status) {
     if (status == 'notListening') {
       _isListening.value = false;
     }
   }
 
+  /// Starts or stops voice input for location search
   Future<void> startVoiceInput() async {
     if (!_speech.isAvailable) {
       handleError('Speech recognition not available');
@@ -321,7 +390,6 @@ class GooglePlacesController extends GetxController
       handleError('Error starting voice recognition');
     }
   }
-
 
   @override
   void onClose() {
