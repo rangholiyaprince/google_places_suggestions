@@ -105,12 +105,6 @@ GooglePlacesSuggestions(
 )
 ```
 
-## Live Demo
-
-See the package in action:
-
-![GooglePlacesSuggestions in action](https://github.com/rangholiyaprince/google_places_suggestions/blob/main/example/assets/google_palce_suggestions.gif)
-
 ## Configuration
 
 Ensure you have enabled **Places API** in your Google Cloud Console and added the API key in your Flutter app.
