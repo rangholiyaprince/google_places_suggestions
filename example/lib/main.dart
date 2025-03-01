@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
       home: HomeScreen(),
     );
   }
@@ -46,15 +47,15 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
+          child: ListView(
             children: [
               // Implementation of GooglePlacesSuggestions widget
               GooglePlacesSuggestions(
                 // Required parameters
                 googleMapKey: 'YOUR_GOOGLE_MAPS_API_KEY',
-                onPlaceSelected: (String placeId) {
+                onPlaceSelected: (String place) {
                   // Handle selected place
-                  print('Selected place ID: $placeId');
+                  print('Selected place: $place');
                 },
 
                 // Optional customization
@@ -120,13 +121,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-              ),
-
-              // You can add more widgets below the search
-              const SizedBox(height: 20),
-              const Text(
-                'Search for any location using the field above',
-                style: TextStyle(color: Colors.grey),
               ),
             ],
           ),

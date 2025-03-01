@@ -287,7 +287,7 @@ class GooglePlacesController extends GetxController
           (enableRecentSearches && _recentSearches.isNotEmpty) ||
           controller.text.isNotEmpty;
     } catch (e) {
-      handleError('Network error occurred');
+      handleError(e.toString());
     }
   }
 

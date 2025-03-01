@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.3]
+- Enhanced error handling in Place API service
+- Update README.md file with latest usage instructions
+
 ## [0.0.2]
 - Rename the method withOpacity to withValues
 

@@ -1,5 +1,8 @@
 # GooglePlacesSuggestions
 
+**Platform Support**
+Android ✅ | iOS ✅ | MacOS ✅ | Web ✅
+
 **GooglePlacesSuggestions** is a Flutter package that delivers real-time location suggestions using the Google Places API. It enhances user experience by providing instant search results as users type.
 
 ![GooglePlacesSuggestions Demo](https://github.com/rangholiyaprince/google_places_suggestions/blob/main/example/assets/google_palce_suggestions.gif)
